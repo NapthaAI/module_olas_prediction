@@ -2,4 +2,4 @@ from pydantic import BaseModel, Field
 
 
 class InputSchema(BaseModel):
-    question: str = Field(..., title="Prediction question")
+    prompt: str = Field(..., title="Prediction question")
