@@ -38,7 +38,7 @@ def extract_json_string(text):
 def run(inputs: InputSchema, cfg) -> Tuple[str, Optional[str], Optional[Dict[str, Any]], Any]:
     """Run the task"""
 
-    prediction_prompt = cfg["inputs"]["prediction_prompt"].format(question=inputs.question)
+    prediction_prompt = cfg["inputs"]["prediction_prompt"].format(question=inputs.prompt)
     messages = [
         {"role": "system", "content": cfg["inputs"]["system_message"]},
         {"role": "user", "content": prediction_prompt},
