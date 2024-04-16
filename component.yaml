@@ -1,0 +1,52 @@
+name: olas_prediction
+author: valory
+version: 0.1.0
+description: A tool for making binary predictions on markets.
+license: Apache-2.0
+
+models:
+  default_model_provider: ollama
+  ollama: 
+    model: ollama/phi
+    max_tokens: 1000
+    temperature: 0
+    api_base: http://localhost:11434
+
+inputs:
+  system_message: "You are a helpful AI assistant."
+  prediction_prompt: |
+    You are an LLM inside a multi-agent system that takes in a prompt of a user requesting a probability estimation
+    for a given event. You are provided with an input under the label "USER_PROMPT". You must follow the instructions
+    under the label "INSTRUCTIONS". You must provide your response in the format specified under "OUTPUT_FORMAT".
+
+    INSTRUCTIONS
+    * Read the input under the label "USER_PROMPT" delimited by three backticks.
+    * The "USER_PROMPT" specifies an event.
+    * The event will only have two possible outcomes: either the event will happen or the event will not happen.
+    * If the event has more than two possible outcomes, you must ignore the rest of the instructions and output the response "Error".
+    * You must provide a probability estimation of the event happening, based on your training data.
+    * You must provide your response in the format specified under "OUTPUT_FORMAT".
+    * Do not include any other contents in your response.
+
+    USER_PROMPT:
+    ```
+    {question}
+    ```
+
+    OUTPUT_FORMAT
+    * Your output response must be only a single JSON object to be parsed by Python's "json.loads()".
+    * The JSON must contain three fields: "p_yes", "p_no", "confidence".
+    * Each item in the JSON must have a value between 0 and 1.
+      - "p_yes": Estimated probability that the event in the "USER_PROMPT" occurs.
+      - "p_no": Estimated probability that the event in the "USER_PROMPT" does not occur.
+      - "confidence": A value between 0 and 1 indicating the confidence in the prediction. 0 indicates lowest
+        confidence value; 1 maximum confidence value.
+    * The sum of "p_yes" and "p_no" must equal 1.
+    * Output only the JSON object. Do not include any other contents in your response.
+    * This is incorrect:"```json{{\n  \"p_yes\": 0.2,\n  \"p_no\": 0.8,\n  \"confidence\": 0.7\n}}```"
+    * This is incorrect:```json"{{\n  \"p_yes\": 0.2,\n  \"p_no\": 0.8,\n  \"confidence\": 0.7\n}}"```
+    * This is correct:"{{\n  \"p_yes\": 0.2,\n  \"p_no\": 0.8,\n  \"confidence\": 0.7\n}}"
+
+implementation:
+    package:
+        entrypoint: run.py
