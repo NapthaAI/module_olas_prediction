@@ -35,13 +35,8 @@ def extract_json_string(text):
     matches = re.findall(pattern, text)
     return matches[0].replace("json", "")
 
-def run(inputs: InputSchema) -> Tuple[str, Optional[str], Optional[Dict[str, Any]], Any]:
+def run(inputs: InputSchema, cfg) -> Tuple[str, Optional[str], Optional[Dict[str, Any]], Any]:
     """Run the task"""
-
-    logger.info(f"Current directory: {os.getcwd()}")
-
-    with open("olas_prediction/component.yaml", 'r') as cfg_file:
-        cfg = yaml.safe_load(cfg_file)
 
     prediction_prompt = cfg["inputs"]["prediction_prompt"].format(question=inputs.question)
     messages = [
