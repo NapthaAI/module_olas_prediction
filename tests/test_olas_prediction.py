@@ -18,7 +18,7 @@ def run_tool(cfg):
 
 if __name__ == "__main__":
 
-    with open("component.yaml", 'r') as cfg_file:
+    with open("olas_prediction/component.yaml", 'r') as cfg_file:
         cfg = yaml.safe_load(cfg_file)
 
     question = "Will there be an initial public offering on either the Shanghai Stock Exchange or the Shenzhen Stock Exchange before 1 January 2016?"
