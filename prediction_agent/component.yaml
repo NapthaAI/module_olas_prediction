@@ -1,5 +1,5 @@
-name: olas_prediction
-author: valory
+name: prediction_agent
+author: naptha
 version: 0.1.0
 description: A tool for making binary predictions on markets.
 license: Apache-2.0
